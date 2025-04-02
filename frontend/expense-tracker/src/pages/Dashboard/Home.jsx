@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 
-import { LuHandCoins, LuWalletMinimal } from "react-icons/lu";
+import { LuWallet, LuTrendingDown, LuTrendingUp } from "react-icons/lu";
 import { IoMdCard } from "react-icons/io";
 
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,6 @@ import FinanceOverview from "../../components/Dashboard/FinanceOverview";
 import ExpenseTransactions from "../../components/Dashboard/ExpenseTransactions";
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
 import RecentIncome from "../../components/Dashboard/RecentIncome";
-import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
 
 const Home = () => {
   useUserAuth();
@@ -53,70 +52,75 @@ const Home = () => {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-500 tracking-wide">Overview of your financial status</p>
+          <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h1>
+          <p className="mt-2 text-gray-600 tracking-wide">Overview of your financial status</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <InfoCard
-            icon={<IoMdCard />}
+            icon={<LuWallet className="text-xl text-white" />}
             label="Total Balance"
             value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
-            color="bg-blue-500"
+            color="bg-[#5a94f2] text-white"
           />
 
           <InfoCard
-            icon={<LuWalletMinimal />}
+            icon={<LuTrendingUp className="text-xl text-white" />}
             label="Total Income"
             value={addThousandsSeparator(dashboardData?.totalIncome || 0)}
-            color="bg-green-500"
+            color="bg-[#5fcfaa] text-white"
           />
 
           <InfoCard
-            icon={<LuHandCoins />}
+            icon={<LuTrendingDown className="text-xl text-white" />}
             label="Total Expenses"
             value={addThousandsSeparator(dashboardData?.totalExpenses || 0)}
-            color="bg-red-500"
+            color="bg-[#f06767] text-white"
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <FinanceOverview
-            totalBalance={dashboardData?.totalBalance || 0}
-            totalIncome={dashboardData?.totalIncome || 0}
-            totalExpense={dashboardData?.totalExpenses || 0}
-          />
-
-          <RecentIncomeWithChart
-            data={dashboardData?.last60DaysIncome?.transactions?.slice(0,4) || []}
-            totalIncome={dashboardData?.totalIncome || 0}
-          />
+        <div className="mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <FinanceOverview
+              totalBalance={dashboardData?.totalBalance || 0}
+              totalIncome={dashboardData?.totalIncome || 0}
+              totalExpense={dashboardData?.totalExpenses || 0}
+            />
+          </div>
         </div>
 
         <div className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <RecentTransactions
-              transactions={dashboardData?.recentTransactions}
-              onSeeMore={() => navigate("/expense")}
-            />
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <RecentTransactions
+                transactions={dashboardData?.recentTransactions}
+                onSeeMore={() => navigate("/expense")}
+              />
+            </div>
 
-            <ExpenseTransactions
-              transactions={dashboardData?.last30DaysExpenses?.transactions || []}
-              onSeeMore={() => navigate("/expense")}
-            />
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <ExpenseTransactions
+                transactions={dashboardData?.last30DaysExpenses?.transactions || []}
+                onSeeMore={() => navigate("/expense")}
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <RecentIncome
-              transactions={dashboardData?.last60DaysIncome?.transactions || []}
-              onSeeMore={() => navigate("/income")}
-            />
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <RecentIncome
+                transactions={dashboardData?.last60DaysIncome?.transactions || []}
+                onSeeMore={() => navigate("/income")}
+              />
+            </div>
 
-            <Last30DaysExpenses
-              data={dashboardData?.last30DaysExpenses?.transactions || []}
-            />
+            <div className="bg-white rounded-xl shadow-sm p-6">
+              <Last30DaysExpenses
+                data={dashboardData?.last30DaysExpenses?.transactions || []}
+              />
+            </div>
           </div>
         </div>
       </div>
