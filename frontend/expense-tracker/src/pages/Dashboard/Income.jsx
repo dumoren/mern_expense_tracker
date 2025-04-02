@@ -132,7 +132,7 @@ const Income = () => {
   }, []);
 
   return (
-    <DashboardLayout>
+    <DashboardLayout activeMenu="Income">
       <div className="p-6">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-semibold text-gray-800">Income Management</h2>
