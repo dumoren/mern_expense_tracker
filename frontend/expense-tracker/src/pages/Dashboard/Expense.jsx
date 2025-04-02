@@ -135,44 +135,48 @@ const Expense = () => {
   }, []);
 
   return (
-    <DashboardLayout activeMenu="Expense">
-      <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 gap-6">
-          <div className="">
+    <DashboardLayout>
+      <div className="p-6">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800">Expense Management</h2>
+          <p className="text-gray-500 mt-2">Track and manage your expenses</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="lg:col-span-2">
             <ExpenseOverview
               transactions={expenseData}
               onExpenseIncome={() => setOpenAddExpenseModal(true)}
             />
           </div>
 
-          <ExpenseList
-            transactions={expenseData}
-            onDelete={(id) => {
-              setOpenDeleteAlert({ show: true, data: id });
-            }}
-            onDownload={handleDownloadExpenseDetails}
-          />
-
-          <Modal
-            isOpen={openAddExpenseModal}
-            onClose={() => setOpenAddExpenseModal(false)}
-            title="Add Expense"
-          >
-            <AddExpenseForm onAddExpense={handleAddExpense} />
-          </Modal>
-
-          <Modal
-            isOpen={openDeleteAlert.show}
-            onClose={() => setOpenDeleteAlert({ show: false, data: null })}
-            title="Delete Expense"
-          >
-            <DeleteAlert
-              content="Are you sure you want to delete this expense detail?"
-              onDelete={() => deleteExpense(openDeleteAlert.data)}
+          <div className="lg:col-span-2">
+            <ExpenseList
+              transactions={expenseData}
+              onDelete={(id) =>
+                setOpenDeleteAlert({ show: true, data: { id } })
+              }
+              onDownload={handleDownloadExpenseDetails}
             />
-          </Modal>
+          </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={openAddExpenseModal}
+        onClose={() => setOpenAddExpenseModal(false)}
+        title="Add New Expense"
+      >
+        <AddExpenseForm onAddExpense={handleAddExpense} />
+      </Modal>
+
+      <DeleteAlert
+        isOpen={openDeleteAlert.show}
+        onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+        onConfirm={() => deleteExpense(openDeleteAlert.data?.id)}
+        title="Delete Expense"
+        message="Are you sure you want to delete this expense record? This action cannot be undone."
+      />
     </DashboardLayout>
   );
 };

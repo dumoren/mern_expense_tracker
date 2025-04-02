@@ -5,10 +5,10 @@ const CustomLineChart = ({ data }) => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
-          <p className="text-xs font-semibold text-blue-800 mb-1">{payload[0].payload.category}</p>
+        <div className="bg-white shadow-sm rounded-lg p-3 border border-gray-100">
+          <p className="text-sm font-medium text-gray-900 mb-1">{payload[0].payload.category}</p>
           <p className="text-sm text-gray-600">
-            Amount: <span className="text-sm font-medium text-gray-900">${payload[0].payload.amount}</span>
+            Amount: <span className="font-medium text-gray-900">${payload[0].payload.amount}</span>
           </p>
         </div>
       );
@@ -20,19 +20,43 @@ const CustomLineChart = ({ data }) => {
     <div className="bg-white">
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
-            <defs>
+          <defs>
             <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
             </linearGradient>
-            </defs>
-            
-            <CartesianGrid stroke="none" />
-            <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#555" }} stroke="none" />
-            <YAxis tick={{ fontSize: 12, fill: "#555" }} stroke="none" />
-            <Tooltip content={<CustomTooltip />} />
-            
-            <Area type="monotone" dataKey="amount" stroke="#3b82f6"  fill="url(#incomeGradient)" strokeWidth={3} dot={{ r: 3, fill: "#60a5fa" }} />
+          </defs>
+          
+          <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" vertical={false} />
+          <XAxis 
+            dataKey="month" 
+            tick={{ fontSize: 12, fill: "#6B7280" }} 
+            stroke="#E5E7EB"
+            axisLine={false}
+          />
+          <YAxis 
+            tick={{ fontSize: 12, fill: "#6B7280" }} 
+            stroke="#E5E7EB"
+            axisLine={false}
+          />
+          <Tooltip 
+            content={<CustomTooltip />} 
+            cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+          />
+          
+          <Area 
+            type="monotone" 
+            dataKey="amount" 
+            stroke="#3b82f6" 
+            fill="url(#incomeGradient)" 
+            strokeWidth={2} 
+            dot={{ 
+              r: 4, 
+              fill: "#3b82f6",
+              stroke: "#fff",
+              strokeWidth: 2
+            }} 
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

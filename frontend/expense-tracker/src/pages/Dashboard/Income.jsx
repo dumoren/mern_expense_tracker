@@ -132,44 +132,48 @@ const Income = () => {
   }, []);
 
   return (
-    <DashboardLayout activeMenu="Income">
-      <div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 gap-6">
-          <div className="">
+    <DashboardLayout>
+      <div className="p-6">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800">Income Management</h2>
+          <p className="text-gray-500 mt-2">Track and manage your income sources</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="lg:col-span-2">
             <IncomeOverview
               transactions={incomeData}
               onAddIncome={() => setOpenAddIncomeModal(true)}
             />
           </div>
 
-          <IncomeList
-            transactions={incomeData}
-            onDelete={(id) => {
-              setOpenDeleteAlert({ show: true, data: id });
-            }}
-            onDownload={handleDownloadIncomeDetails}
-          />
-
-          <Modal
-            isOpen={openAddIncomeModal}
-            onClose={() => setOpenAddIncomeModal(false)}
-            title="Add Income"
-          >
-            <AddIncomeForm onAddIncome={handleAddIncome} />
-          </Modal>
-
-          <Modal
-            isOpen={openDeleteAlert.show}
-            onClose={() => setOpenDeleteAlert({ show: false, data: null })}
-            title="Delete Income"
-          >
-            <DeleteAlert
-              content="Are you sure you want to delete this income detail?"
-              onDelete={() => deleteIncome(openDeleteAlert.data)}
+          <div className="lg:col-span-2">
+            <IncomeList
+              transactions={incomeData}
+              onDelete={(id) =>
+                setOpenDeleteAlert({ show: true, data: { id } })
+              }
+              onDownload={handleDownloadIncomeDetails}
             />
-          </Modal>
+          </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={openAddIncomeModal}
+        onClose={() => setOpenAddIncomeModal(false)}
+        title="Add New Income"
+      >
+        <AddIncomeForm onAddIncome={handleAddIncome} />
+      </Modal>
+
+      <DeleteAlert
+        isOpen={openDeleteAlert.show}
+        onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+        onConfirm={() => deleteIncome(openDeleteAlert.data?.id)}
+        title="Delete Income"
+        message="Are you sure you want to delete this income record? This action cannot be undone."
+      />
     </DashboardLayout>
   );
 };
