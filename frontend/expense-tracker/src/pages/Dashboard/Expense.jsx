@@ -12,14 +12,17 @@ import AddExpenseForm from "../../components/Expense/AddExpenseForm";
 import DeleteAlert from "../../components/DeleteAlert";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBudgets } from "../../features/budget/budgetSlice";
 
 const Expense = () => {
   useUserAuth();
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [expenseData, setExpenseData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { budgets } = useSelector((state) => state.budget);
 
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -50,7 +53,7 @@ const Expense = () => {
 
   // Handle Add Expense
   const handleAddExpense = async (expense) => {
-    const { category, amount, date, icon } = expense;
+    const { category, amount, date, icon, budgetId } = expense;
 
     // Validation Checks
     if (!category.trim()) {
@@ -74,16 +77,19 @@ const Expense = () => {
         amount,
         date,
         icon,
+        budgetId: budgetId || undefined, // Send undefined if no budget selected
       });
 
       setOpenAddExpenseModal(false);
       toast.success("Expense added successfully");
       fetchExpenseDetails();
+      dispatch(getAllBudgets()); // Refresh budgets after adding expense
     } catch (error) {
       console.error(
         "Error adding expense:",
         error.response?.data?.message || error.message
       );
+      toast.error(error.response?.data?.message || "Failed to add expense");
     }
   };
 
@@ -95,11 +101,13 @@ const Expense = () => {
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Expense details deleted successfully");
       fetchExpenseDetails();
+      dispatch(getAllBudgets()); // Refresh budgets after deleting expense
     } catch (error) {
       console.error(
         "Error deleting expense:",
         error.response?.data?.message || error.message
       );
+      toast.error(error.response?.data?.message || "Failed to delete expense");
     }
   };
 
@@ -130,9 +138,8 @@ const Expense = () => {
 
   useEffect(() => {
     fetchExpenseDetails();
-
-    return () => {};
-  }, []);
+    dispatch(getAllBudgets()); // Fetch budgets when component mounts
+  }, [dispatch]);
 
   return (
     <DashboardLayout activeMenu="Expense">

@@ -55,7 +55,22 @@ exports.getAllBudgets = async (req, res) => {
     const userId = req.user._id;
     const budgets = await Budget.find({ userId }).sort({ createdAt: -1 });
 
-    res.status(200).json(budgets);
+    // Get expenses for each budget
+    const budgetsWithExpenses = await Promise.all(
+      budgets.map(async (budget) => {
+        const expenses = await Expense.find({ 
+          budgetId: budget._id, 
+          userId 
+        }).sort({ date: -1 });
+        
+        return {
+          ...budget.toObject(),
+          expenses
+        };
+      })
+    );
+
+    res.status(200).json(budgetsWithExpenses);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
