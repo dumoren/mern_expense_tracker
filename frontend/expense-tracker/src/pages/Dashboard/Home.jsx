@@ -66,8 +66,8 @@ const Home = () => {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Left Column - Stats Cards */}
             <div className="space-y-6">
               {/* Total Balance Card */}
@@ -108,30 +108,30 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-            </div>
+        </div>
 
-            {/* Main Content Area - Spans 3 Columns */}
-            <div className="lg:col-span-3 space-y-8">
+            {/* Main Content Area - Spans 4 Columns */}
+            <div className="lg:col-span-4 space-y-8">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column */}
                 <div className="lg:col-span-2 space-y-8">
                   <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
                     <h2 className="text-xl font-bold mb-4 text-gray-800">Financial Overview</h2>
-                    <FinanceOverview
-                      totalBalance={dashboardData?.totalBalance || 0}
-                      totalIncome={dashboardData?.totalIncome || 0}
-                      totalExpense={dashboardData?.totalExpenses || 0}
-                    />
-                  </div>
+            <FinanceOverview
+              totalBalance={dashboardData?.totalBalance || 0}
+              totalIncome={dashboardData?.totalIncome || 0}
+              totalExpense={dashboardData?.totalExpenses || 0}
+            />
+        </div>
 
                   <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
                     <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Transactions</h2>
-                    <RecentTransactions
-                      transactions={dashboardData?.recentTransactions}
-                      onSeeMore={() => navigate("/expense")}
-                    />
+              <RecentTransactions
+                transactions={dashboardData?.recentTransactions}
+                onSeeMore={() => navigate("/expense")}
+              />
                   </div>
-                </div>
+            </div>
 
                 {/* Right Column */}
                 <div className="space-y-8">
@@ -139,16 +139,16 @@ const Home = () => {
                     <h2 className="text-xl font-bold mb-4 text-gray-800">Expense Breakdown</h2>
                     <Last30DaysExpenses
                       data={dashboardData?.last30DaysExpenses?.transactions || []}
-                    />
-                  </div>
+              />
+          </div>
 
                   <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
                     <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Income</h2>
-                    <RecentIncome
-                      transactions={dashboardData?.last60DaysIncome?.transactions || []}
-                      onSeeMore={() => navigate("/income")}
-                    />
-                  </div>
+              <RecentIncome
+                transactions={dashboardData?.last60DaysIncome?.transactions || []}
+                onSeeMore={() => navigate("/income")}
+              />
+            </div>
                 </div>
               </div>
             </div>
