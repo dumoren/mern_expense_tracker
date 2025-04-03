@@ -71,7 +71,7 @@ const GeneralOverviewCard = () => {
         <button
           onClick={fetchFinancialData}
           disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+          className="bg-[#FFD166] text-gray-800 px-4 py-2 rounded hover:bg-[#FFE5B4] disabled:opacity-50 transition-colors duration-300"
         >
           {loading ? "Analyzing..." : "Get Insights"}
         </button>
@@ -79,7 +79,7 @@ const GeneralOverviewCard = () => {
       
       {loading ? (
         <div className="flex-1 flex justify-center items-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD166]"></div>
         </div>
       ) : insights ? (
         <div className="flex-1 overflow-y-auto">

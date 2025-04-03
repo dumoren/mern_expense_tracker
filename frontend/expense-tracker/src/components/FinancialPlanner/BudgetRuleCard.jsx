@@ -64,7 +64,7 @@ const BudgetRuleCard = () => {
         <button
           onClick={fetchFinancialData}
           disabled={loading}
-          className="text-blue-500 hover:text-blue-600 text-sm"
+          className="text-gray-800 hover:text-[#FFD166] text-sm transition-colors duration-300"
         >
           {loading ? "Calculating..." : "Refresh"}
         </button>
@@ -72,7 +72,7 @@ const BudgetRuleCard = () => {
       
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD166]"></div>
         </div>
       ) : (
         <div className="space-y-4">
