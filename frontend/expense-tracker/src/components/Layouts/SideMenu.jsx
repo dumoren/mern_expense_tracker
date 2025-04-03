@@ -51,11 +51,13 @@ const SideMenu = ({ activeMenu }) => {
         <button
           key={`menu_${index}`}
           className={`w-full flex items-center gap-4 text-[15px] ${
-            activeMenu == item.label ? "text-white bg-primary" : ""
-          } py-3 px-6 rounded-lg mb-3`}
+            activeMenu == item.label 
+              ? "text-gray-800 bg-[#FFD166] bg-opacity-20 border border-[#FFD166]" 
+              : "text-gray-600 hover:bg-[#FFE5B4] hover:bg-opacity-50 hover:text-gray-800"
+          } py-3 px-6 rounded-lg mb-3 transition-all duration-300`}
           onClick={() => handleClick(item.path)}
         >
-          <item.icon className="text-xl" />
+          <item.icon className={`text-xl ${activeMenu == item.label ? "text-gray-800" : "text-gray-600"}`} />
           {item.label}
         </button>
       ))}

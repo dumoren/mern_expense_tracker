@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { LuCoins } from "react-icons/lu";
 import SideMenu from "./SideMenu";
 
 const Navbar = ({ activeMenu }) => {
@@ -20,7 +21,10 @@ const Navbar = ({ activeMenu }) => {
         )}
       </button>
 
-      <h2 className="text-lg font-medium text-black">Expense Tracker</h2>
+      <div className="flex items-center gap-2">
+        <LuCoins className="text-2xl text-[#FFD166]" />
+        <h2 className="text-lg font-medium text-gray-800">D.E.M Finance</h2>
+      </div>
 
       {openSideMenu && (
         <div className="fixed top-[61px] -ml-4 bg-white">
