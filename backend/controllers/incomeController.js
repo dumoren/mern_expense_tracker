@@ -1,8 +1,8 @@
-const xlsx = require('xlsx');
-const Income = require("../models/Income");
+import xlsx from 'xlsx';
+import Income from "../models/Income.js";
 
 // Add Income
-exports.addIncome = async (req, res) => {
+export const addIncome = async (req, res) => {
   const userId = req.user.id;
 
   try {
@@ -29,7 +29,7 @@ exports.addIncome = async (req, res) => {
 };
 
 // Get All Income (For Logged-in User)
-exports.getAllIncome = async (req, res) => {
+export const getAllIncome = async (req, res) => {
   const userId = req.user.id;
 
   try {
@@ -41,7 +41,7 @@ exports.getAllIncome = async (req, res) => {
 };
 
 // Delete Income
-exports.deleteIncome = async (req, res) => {
+export const deleteIncome = async (req, res) => {
   const userId = req.user.id;
 
   try {
@@ -52,24 +52,34 @@ exports.deleteIncome = async (req, res) => {
   }
 };
 
-// Download Income Details in Excel
-exports.downloadIncomeExcel = async (req, res) => {
+// Download Income Excel
+export const downloadIncomeExcel = async (req, res) => {
   const userId = req.user.id;
+
   try {
     const income = await Income.find({ userId }).sort({ date: -1 });
-
-    // Prepare data for Excel
-    const data = income.map((item) => ({
+    
+    // Convert income data to worksheet
+    const worksheet = xlsx.utils.json_to_sheet(income.map(item => ({
       Source: item.source,
       Amount: item.amount,
-      Date: item.date,
-    }));
-    
-    const wb = xlsx.utils.book_new();
-    const ws = xlsx.utils.json_to_sheet(data);
-    xlsx.utils.book_append_sheet(wb, ws, "Income");
-    xlsx.writeFile(wb, 'income_details.xlsx');
-    res.download('income_details.xlsx');
+      Date: item.date.toISOString().split('T')[0],
+      Icon: item.icon || ''
+    })));
+
+    // Create workbook and add worksheet
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Income');
+
+    // Generate Excel file
+    const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+
+    // Set response headers
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=income.xlsx');
+
+    // Send the Excel file
+    res.send(excelBuffer);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }

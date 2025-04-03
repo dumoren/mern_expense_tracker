@@ -1,9 +1,9 @@
-const Income = require("../models/Income");
-const Expense = require("../models/Expense");
-const { isValidObjectId, Types } = require("mongoose");
+import Income from "../models/Income.js";
+import Expense from "../models/Expense.js";
+import { isValidObjectId, Types } from "mongoose";
 
 // Add Expense
-exports.getDashboardData = async (req, res) => {
+export const getDashboardData = async (req, res) => {
   try {
     const userId = req.user.id;
     const userObjectId = new Types.ObjectId(String(userId));
