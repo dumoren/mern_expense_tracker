@@ -43,11 +43,11 @@ const AddExpenseForm = ({ onAddExpense, onClose }) => {
   };
 
   return (
-    <div className="bg-white/95 rounded-2xl w-full p-6">
+    <div className="bg-white/95 rounded-2xl w-full">
       {/* Form Content */}
       <div className="space-y-5">
         {/* Emoji Picker */}
-        <div className="mb-6">
+        <div className="mb-6 relative">
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Pick Icon
           </label>

@@ -10,11 +10,19 @@ import {
   Cell,
 } from "recharts";
 
-const CustomBarChart = ({ data }) => {
+const CustomBarChart = ({ data, chartType = "default" }) => {
 
-  // Function to alternate colors
+  // Function to alternate colors based on chart type
   const getBarColor = (index) => {
-    return index % 2 === 0 ? "#ef4444" : "#fca5a5"; // Red and light red
+    if (chartType === "expense") {
+      return index % 2 === 0 ? "#ef4444" : "#fca5a5"; // Red and light red
+    }
+    return index % 2 === 0 ? "#34d399" : "#a7f3d0"; // Default: Emerald green and light mint
+  };
+
+  // Get active bar color based on chart type
+  const getActiveBarColor = () => {
+    return chartType === "expense" ? "#dc2626" : "#059669";
   };
 
   const CustomTooltip = ({ active, payload }) => {
@@ -51,7 +59,7 @@ const CustomBarChart = ({ data }) => {
           <Bar
             dataKey="amount"
             radius={[6, 6, 0, 0]}
-            activeBar={{ fill: "#dc2626" }}
+            activeBar={{ fill: getActiveBarColor() }}
           >
             {data.map((entry, index) => (
               <Cell key={index} fill={getBarColor(index)} />

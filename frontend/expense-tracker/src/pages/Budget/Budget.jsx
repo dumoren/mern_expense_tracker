@@ -58,8 +58,11 @@ const Budget = () => {
     <DashboardLayout activeMenu="Budget">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ToastContainer position="top-right" autoClose={3000} />
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-800">Budgets</h1>
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-semibold text-gray-800">Budget Management</h1>
+          <p className="text-gray-500 mt-2">Track and manage your budgets</p>
+        </div>
+        <div className="flex justify-end mb-6">
           <button
             onClick={() => setIsFormOpen(true)}
             className="bg-[#FFD166] text-gray-800 px-4 py-2 rounded-xl hover:bg-[#FFD166]/90 transition-colors"

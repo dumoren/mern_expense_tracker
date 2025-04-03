@@ -4,12 +4,12 @@ const Modal = ({ isOpen, onClose, children, title }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-[2px]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto pt-10 pb-10 backdrop-blur-[2px]">
       <div className="relative w-full max-w-2xl p-4">
         {/* Modal content */}
         <div className="relative bg-white/95 rounded-2xl shadow-lg">
           {/* Modal header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-100">
+          <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-gray-100 bg-white/95 rounded-t-2xl">
             <h3 className="text-lg font-medium text-gray-800">
               {title}
             </h3>
@@ -37,7 +37,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
           </div>
 
           {/* Modal body */}
-          <div className="p-4">
+          <div className="p-4 max-h-[calc(100vh-200px)] overflow-y-auto">
             {children}
           </div>
         </div>
