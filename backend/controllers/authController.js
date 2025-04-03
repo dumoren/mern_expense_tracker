@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const { createDefaultCategories } = require("./categoryController");
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -29,6 +30,9 @@ exports.registerUser = async (req, res) => {
       password,
       profileImageUrl,
     });
+
+    // Create default categories for the new user
+    await createDefaultCategories(user._id);
 
     res.status(201).json({
       id: user._id,
