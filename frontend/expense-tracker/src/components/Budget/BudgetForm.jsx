@@ -41,9 +41,6 @@ const BudgetForm = ({ budget, onSubmit, onClose }) => {
       description: formData.description.trim(),
     };
 
-    // Log the data being sent
-    console.log("Submitting budget data:", submitData);
-
     // Call the onSubmit handler with the correct data
     if (budget?._id) {
       onSubmit(budget._id, submitData);
@@ -53,14 +50,11 @@ const BudgetForm = ({ budget, onSubmit, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">
-          {budget ? "Edit Budget" : "Create Budget"}
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+    <div className="bg-white/95 rounded-2xl w-full p-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Budget Name
             </label>
             <input
@@ -68,12 +62,14 @@ const BudgetForm = ({ budget, onSubmit, onClose }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#FFD166] focus:ring-2 focus:ring-[#FFD166] focus:ring-opacity-20 transition-colors"
               required
+              placeholder="Monthly Budget, Project Budget, etc"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Total Amount
             </label>
             <input
@@ -81,41 +77,46 @@ const BudgetForm = ({ budget, onSubmit, onClose }) => {
               name="totalAmount"
               value={formData.totalAmount}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#FFD166] focus:ring-2 focus:ring-[#FFD166] focus:ring-opacity-20 transition-colors"
               required
               min="0"
               step="0.01"
+              placeholder="Enter budget amount"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Description (Optional)
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#FFD166] focus:ring-2 focus:ring-[#FFD166] focus:ring-opacity-20 transition-colors resize-none"
               rows="3"
+              placeholder="Add a description for your budget"
             />
           </div>
-          <div className="flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              {budget ? "Update" : "Create"}
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 mt-8">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-2.5 rounded-xl bg-[#FFD166] text-gray-800 hover:bg-[#FFD166]/90 transition-colors"
+          >
+            {budget ? "Update Budget" : "Create Budget"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

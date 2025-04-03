@@ -172,9 +172,12 @@ const Expense = () => {
           <Modal
             isOpen={openAddExpenseModal}
             onClose={() => setOpenAddExpenseModal(false)}
-        title="Add New Expense"
+            title="Add New Expense"
           >
-            <AddExpenseForm onAddExpense={handleAddExpense} />
+            <AddExpenseForm 
+              onAddExpense={handleAddExpense} 
+              onClose={() => setOpenAddExpenseModal(false)}
+            />
           </Modal>
 
       <DeleteAlert

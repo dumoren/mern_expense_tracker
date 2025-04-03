@@ -14,7 +14,7 @@ const CustomBarChart = ({ data }) => {
 
   // Function to alternate colors
   const getBarColor = (index) => {
-    return index % 2 === 0 ? "#3b82f6" : "#93c5fd"; 
+    return index % 2 === 0 ? "#ef4444" : "#fca5a5"; // Red and light red
   };
 
   const CustomTooltip = ({ active, payload }) => {
@@ -51,7 +51,7 @@ const CustomBarChart = ({ data }) => {
           <Bar
             dataKey="amount"
             radius={[6, 6, 0, 0]}
-            activeBar={{ fill: "#2563EB" }}
+            activeBar={{ fill: "#dc2626" }}
           >
             {data.map((entry, index) => (
               <Cell key={index} fill={getBarColor(index)} />

@@ -11,6 +11,7 @@ import { useUserAuth } from "../../hooks/useUserAuth";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { formatCurrency } from "../../utils/format";
+import Modal from "../../components/Modal";
 
 const Budget = () => {
   useUserAuth();
@@ -61,7 +62,7 @@ const Budget = () => {
           <h1 className="text-2xl font-semibold text-gray-800">Budgets</h1>
           <button
             onClick={() => setIsFormOpen(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-[#FFD166] text-gray-800 px-4 py-2 rounded-xl hover:bg-[#FFD166]/90 transition-colors"
           >
             Create Budget
           </button>
@@ -69,7 +70,7 @@ const Budget = () => {
 
         {loading ? (
           <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFD166]"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -80,7 +81,7 @@ const Budget = () => {
                   onClick={() => handleBudgetSelect(budget)}
                   className={`p-4 rounded-lg cursor-pointer ${
                     selectedBudget?._id === budget._id
-                      ? "bg-blue-100 border-2 border-blue-500"
+                      ? "bg-[#FFD166]/10 border-2 border-[#FFD166]"
                       : "bg-white border border-gray-200"
                   }`}
                 >
@@ -112,21 +113,23 @@ const Budget = () => {
           </div>
         )}
 
-        {isFormOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg w-full max-w-md">
-              <h2 className="text-xl font-bold mb-4">Add New Budget</h2>
-              <BudgetForm
-                budget={selectedBudget}
-                onSubmit={selectedBudget ? handleUpdateBudget : handleAddBudget}
-                onClose={() => {
-                  setIsFormOpen(false);
-                  setSelectedBudget(null);
-                }}
-              />
-            </div>
-          </div>
-        )}
+        <Modal
+          isOpen={isFormOpen}
+          onClose={() => {
+            setIsFormOpen(false);
+            setSelectedBudget(null);
+          }}
+          title={selectedBudget ? "Edit Budget" : "Create Budget"}
+        >
+          <BudgetForm
+            budget={selectedBudget}
+            onSubmit={selectedBudget ? handleUpdateBudget : handleAddBudget}
+            onClose={() => {
+              setIsFormOpen(false);
+              setSelectedBudget(null);
+            }}
+          />
+        </Modal>
       </div>
     </DashboardLayout>
   );

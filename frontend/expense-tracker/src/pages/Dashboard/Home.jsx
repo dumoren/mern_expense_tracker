@@ -55,7 +55,7 @@ const Home = () => {
       <div className="min-h-screen bg-white text-gray-800">
         {/* Header Section */}
         <div className="relative w-full bg-[#FFD166] bg-opacity-20 py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-3xl font-bold text-gray-800">
               D.E.M Finance
             </h1>

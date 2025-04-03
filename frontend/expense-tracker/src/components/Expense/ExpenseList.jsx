@@ -9,7 +9,10 @@ const ExpenseList = ({ transactions, onDelete, onDownload }) => {
       <div className="flex items-center justify-between">
         <h5 className="text-lg">All Expenses</h5>
 
-        <button className="card-btn" onClick={onDownload}>
+        <button 
+          className="flex items-center gap-2 px-4 py-2 bg-[#FFD166] text-gray-800 rounded-xl hover:bg-[#FFD166]/90 transition-colors" 
+          onClick={onDownload}
+        >
           <LuDownload className="text-base" /> Download
         </button>
       </div>

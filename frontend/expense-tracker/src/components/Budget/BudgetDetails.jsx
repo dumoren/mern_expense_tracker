@@ -16,7 +16,7 @@ const BudgetDetails = ({ budget, onEdit, loading }) => {
         </div>
         <button
           onClick={onEdit}
-          className="text-blue-600 hover:text-blue-800 transition-colors"
+          className="text-[#FFD166] hover:text-[#FFD166]/80 transition-colors"
         >
           Edit
         </button>
@@ -45,7 +45,7 @@ const BudgetDetails = ({ budget, onEdit, loading }) => {
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-blue-600 h-2 rounded-full"
+              className="bg-[#FFD166] h-2 rounded-full transition-all duration-300"
               style={{ width: `${remainingPercentage}%` }}
             ></div>
           </div>
