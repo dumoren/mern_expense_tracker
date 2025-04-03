@@ -1,8 +1,9 @@
-const xlsx = require('xlsx');
-const Expense = require("../models/Expense");
+import xlsx from 'xlsx';
+import Expense from "../models/Expense.js";
+import Budget from "../models/Budget.js";
 
 // Add Expense
-exports.addExpense = async (req, res) => {
+export const addExpense = async (req, res) => {
   const userId = req.user.id;
 
   try {
@@ -15,7 +16,6 @@ exports.addExpense = async (req, res) => {
 
     // If budgetId is provided, validate it exists
     if (budgetId) {
-      const Budget = require("../models/Budget");
       const budget = await Budget.findById(budgetId);
       if (!budget) {
         return res.status(400).json({ message: "Invalid budget selected" });
@@ -43,29 +43,26 @@ exports.addExpense = async (req, res) => {
 };
 
 // Get All Expenses (For Logged-in User)
-exports.getAllExpenses = async (req, res) => {
+export const getAllExpenses = async (req, res) => {
   const userId = req.user.id;
   const { budgetId } = req.query;
 
   try {
-    // Build query object
     const query = { userId };
-    
-    // Add budgetId to query if provided
     if (budgetId) {
       query.budgetId = budgetId;
     }
-
     const expenses = await Expense.find(query).sort({ date: -1 });
     res.json(expenses);
   } catch (error) {
-    console.error("Error fetching expenses:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
 // Delete Expense
-exports.deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res) => {
+  const userId = req.user.id;
+
   try {
     await Expense.findByIdAndDelete(req.params.id);
     res.json({ message: "Expense deleted successfully" });
@@ -74,24 +71,35 @@ exports.deleteExpense = async (req, res) => {
   }
 };
 
-// Download Expense Details in Excel
-exports.downloadExpenseExcel = async (req, res) => {
+// Download Expense Excel
+export const downloadExpenseExcel = async (req, res) => {
   const userId = req.user.id;
-  try {
-    const expense = await Expense.find({ userId }).sort({ date: -1 });
 
-    // Prepare data for Excel
-    const data = expense.map((item) => ({
+  try {
+    const expenses = await Expense.find({ userId }).sort({ date: -1 });
+    
+    // Convert expense data to worksheet
+    const worksheet = xlsx.utils.json_to_sheet(expenses.map(item => ({
       Category: item.category,
       Amount: item.amount,
-      Date: item.date,
-    }));
-    
-    const wb = xlsx.utils.book_new();
-    const ws = xlsx.utils.json_to_sheet(data);
-    xlsx.utils.book_append_sheet(wb, ws, "Expense");
-    xlsx.writeFile(wb, 'expense_details.xlsx');
-    res.download('expense_details.xlsx');
+      Date: item.date.toISOString().split('T')[0],
+      Icon: item.icon || '',
+      Budget: item.budgetId ? 'Yes' : 'No'
+    })));
+
+    // Create workbook and add worksheet
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Expenses');
+
+    // Generate Excel file
+    const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+
+    // Set response headers
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=expenses.xlsx');
+
+    // Send the Excel file
+    res.send(excelBuffer);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }

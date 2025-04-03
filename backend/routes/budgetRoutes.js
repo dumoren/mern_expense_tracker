@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
-const {
+import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
+import {
   createBudget,
   getAllBudgets,
   getBudgetDetails,
   updateBudget,
   deleteBudget,
-} = require("../controllers/budgetController");
+} from "../controllers/budgetController.js";
+
+const router = express.Router();
 
 // All routes are prefixed with /api/v1/budget
 router.use(protect);
@@ -18,4 +19,4 @@ router.get("/:budgetId", getBudgetDetails);
 router.put("/:budgetId", updateBudget);
 router.delete("/:budgetId", deleteBudget);
 
-module.exports = router; 
+export default router; 

@@ -1,8 +1,8 @@
-const Budget = require("../models/Budget");
-const Expense = require("../models/Expense");
+import Budget from "../models/Budget.js";
+import Expense from "../models/Expense.js";
 
 // Create a new budget
-exports.createBudget = async (req, res) => {
+export const createBudget = async (req, res) => {
   try {
     console.log("Request headers:", req.headers);
     console.log("Request body:", req.body);
@@ -50,7 +50,7 @@ exports.createBudget = async (req, res) => {
 };
 
 // Get all budgets for a user
-exports.getAllBudgets = async (req, res) => {
+export const getAllBudgets = async (req, res) => {
   try {
     const userId = req.user._id;
     const budgets = await Budget.find({ userId }).sort({ createdAt: -1 });
@@ -77,7 +77,7 @@ exports.getAllBudgets = async (req, res) => {
 };
 
 // Get a single budget with its expenses
-exports.getBudgetDetails = async (req, res) => {
+export const getBudgetDetails = async (req, res) => {
   try {
     const { budgetId } = req.params;
     const userId = req.user._id;
@@ -99,7 +99,7 @@ exports.getBudgetDetails = async (req, res) => {
 };
 
 // Update a budget
-exports.updateBudget = async (req, res) => {
+export const updateBudget = async (req, res) => {
   try {
     const { budgetId } = req.params;
     const { name, totalAmount, description } = req.body;
@@ -113,16 +113,11 @@ exports.updateBudget = async (req, res) => {
     // Calculate the difference in total amount
     const amountDiff = totalAmount - budget.totalAmount;
     
-    // Update remaining amount proportionally
-    const newRemainingAmount = budget.remainingAmount + amountDiff;
-    if (newRemainingAmount < 0) {
-      return res.status(400).json({ message: "Cannot reduce budget below spent amount" });
-    }
-
-    budget.name = name;
-    budget.totalAmount = totalAmount;
-    budget.remainingAmount = newRemainingAmount;
-    budget.description = description;
+    // Update the budget
+    budget.name = name || budget.name;
+    budget.totalAmount = totalAmount || budget.totalAmount;
+    budget.description = description || budget.description;
+    budget.remainingAmount += amountDiff;
 
     await budget.save();
 
@@ -133,23 +128,17 @@ exports.updateBudget = async (req, res) => {
 };
 
 // Delete a budget
-exports.deleteBudget = async (req, res) => {
+export const deleteBudget = async (req, res) => {
   try {
     const { budgetId } = req.params;
     const userId = req.user._id;
 
-    // Check if there are any expenses associated with this budget
-    const hasExpenses = await Expense.exists({ budgetId });
-    if (hasExpenses) {
-      return res.status(400).json({ 
-        message: "Cannot delete budget with associated expenses. Please remove or reassign expenses first." 
-      });
-    }
-
-    const budget = await Budget.findOneAndDelete({ _id: budgetId, userId });
+    const budget = await Budget.findOne({ _id: budgetId, userId });
     if (!budget) {
       return res.status(404).json({ message: "Budget not found" });
     }
+
+    await budget.deleteOne();
 
     res.status(200).json({ message: "Budget deleted successfully" });
   } catch (error) {

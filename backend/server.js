@@ -1,13 +1,20 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
-const incomeRoutes = require("./routes/incomeRoutes");
-const expenseRoutes = require("./routes/expenseRoutes");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const budgetRoutes = require("./routes/budgetRoutes");
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import incomeRoutes from "./routes/incomeRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import budgetRoutes from "./routes/budgetRoutes.js";
+import financialPlannerRoutes from "./routes/financialPlannerRoutes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config();
 
 const app = express();
 
@@ -32,6 +39,7 @@ app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/budget", budgetRoutes);
+app.use("/api/v1/financial-planner", financialPlannerRoutes);
 
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

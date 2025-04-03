@@ -14,6 +14,7 @@ import Home from "./pages/Dashboard/Home";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
 import Budget from "./pages/Budget/Budget";
+import FinancialPlanner from "./pages/FinancialPlanner/FinancialPlanner";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/income" exact element={<Income />} />
             <Route path="/expense" exact element={<Expense />} />
             <Route path="/budget" exact element={<Budget />} />
+            <Route path="/financial-planner" exact element={<FinancialPlanner />} />
           </Routes>
         </Router>
 

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ExpenseSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -36,4 +36,4 @@ ExpenseSchema.pre('remove', async function(next) {
   next();
 });
 
-module.exports = mongoose.model("Expense", ExpenseSchema);
+export default mongoose.model("Expense", ExpenseSchema);
