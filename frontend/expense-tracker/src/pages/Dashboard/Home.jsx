@@ -67,91 +67,89 @@ const Home = () => {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Top Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {/* Total Balance Card */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
-              <h3 className="text-gray-600 text-sm font-medium mb-2">Total Balance</h3>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-3xl font-bold text-gray-800">
-                  ${addThousandsSeparator(dashboardData?.totalIncome - dashboardData?.totalExpenses || 0)}
-                </p>
-                <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
-                  <LuWallet className="text-gray-800 text-xl" />
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Left Column - Stats Cards */}
+            <div className="space-y-6">
+              {/* Total Balance Card */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
+                <h3 className="text-gray-600 text-sm font-medium mb-2">Total Balance</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-3xl font-bold text-gray-800">
+                    ${addThousandsSeparator(dashboardData?.totalIncome - dashboardData?.totalExpenses || 0)}
+                  </p>
+                  <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
+                    <LuWallet className="text-gray-800 text-xl" />
+                  </div>
                 </div>
               </div>
-              {/* Placeholder div for consistent height */}
-              <div className="h-6"></div>
-            </div>
 
-            {/* Total Income Card */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
-              <h3 className="text-gray-600 text-sm font-medium mb-2">Total Income</h3>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-3xl font-bold text-gray-800">
-                  ${addThousandsSeparator(dashboardData?.totalIncome || 0)}
-                </p>
-                <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
-                  <LuTrendingUp className="text-gray-800 text-xl" />
+              {/* Total Income Card */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
+                <h3 className="text-gray-600 text-sm font-medium mb-2">Total Income</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-3xl font-bold text-gray-800">
+                    ${addThousandsSeparator(dashboardData?.totalIncome || 0)}
+                  </p>
+                  <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
+                    <LuTrendingUp className="text-gray-800 text-xl" />
+                  </div>
                 </div>
               </div>
-              {/* Placeholder div for consistent height */}
-              <div className="h-6"></div>
-            </div>
 
-            {/* Total Expenses Card */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
-              <h3 className="text-gray-600 text-sm font-medium mb-2">Total Expenses</h3>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-3xl font-bold text-gray-800">
-                  ${addThousandsSeparator(dashboardData?.totalExpenses || 0)}
-                </p>
-                <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
-                  <LuTrendingDown className="text-gray-800 text-xl" />
+              {/* Total Expenses Card */}
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg hover:border-[#FFD166] transition-all duration-300">
+                <h3 className="text-gray-600 text-sm font-medium mb-2">Total Expenses</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-3xl font-bold text-gray-800">
+                    ${addThousandsSeparator(dashboardData?.totalExpenses || 0)}
+                  </p>
+                  <div className="w-10 h-10 rounded-full bg-[#FFD166] bg-opacity-20 flex items-center justify-center">
+                    <LuTrendingDown className="text-gray-800 text-xl" />
+                  </div>
                 </div>
               </div>
-              {/* Placeholder div for consistent height */}
-              <div className="h-6"></div>
-            </div>
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column */}
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Financial Overview</h2>
-                <FinanceOverview
-                  totalBalance={dashboardData?.totalBalance || 0}
-                  totalIncome={dashboardData?.totalIncome || 0}
-                  totalExpense={dashboardData?.totalExpenses || 0}
-                />
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Transactions</h2>
-                <RecentTransactions
-                  transactions={dashboardData?.recentTransactions}
-                  onSeeMore={() => navigate("/expense")}
-                />
-              </div>
             </div>
 
-            {/* Right Column */}
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Expense Breakdown</h2>
-                <Last30DaysExpenses
-                  data={dashboardData?.last30DaysExpenses?.transactions || []}
-                />
-              </div>
+            {/* Main Content Area - Spans 3 Columns */}
+            <div className="lg:col-span-3 space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column */}
+                <div className="lg:col-span-2 space-y-8">
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">Financial Overview</h2>
+                    <FinanceOverview
+                      totalBalance={dashboardData?.totalBalance || 0}
+                      totalIncome={dashboardData?.totalIncome || 0}
+                      totalExpense={dashboardData?.totalExpenses || 0}
+                    />
+                  </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
-                <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Income</h2>
-                <RecentIncome
-                  transactions={dashboardData?.last60DaysIncome?.transactions || []}
-                  onSeeMore={() => navigate("/income")}
-                />
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Transactions</h2>
+                    <RecentTransactions
+                      transactions={dashboardData?.recentTransactions}
+                      onSeeMore={() => navigate("/expense")}
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-8">
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">Expense Breakdown</h2>
+                    <Last30DaysExpenses
+                      data={dashboardData?.last30DaysExpenses?.transactions || []}
+                    />
+                  </div>
+
+                  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg">
+                    <h2 className="text-xl font-bold mb-4 text-gray-800">Recent Income</h2>
+                    <RecentIncome
+                      transactions={dashboardData?.last60DaysIncome?.transactions || []}
+                      onSeeMore={() => navigate("/income")}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
