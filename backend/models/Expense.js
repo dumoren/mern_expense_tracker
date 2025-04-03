@@ -13,29 +13,16 @@ const ExpenseSchema = new mongoose.Schema({
 ExpenseSchema.pre('save', async function(next) {
   if (this.budgetId && (this.isNew || this.isModified('amount') || this.isModified('budgetId'))) {
     const Budget = mongoose.model('Budget');
-    const budget = await Budget.findById(this.budgetId);
     
-    if (!budget) {
-      throw new Error('Budget not found');
-    }
-
     if (this.isNew) {
       // New expense being added
-      if (budget.remainingAmount < this.amount) {
-        throw new Error('Expense amount exceeds budget remaining amount');
-      }
-      budget.remainingAmount -= this.amount;
+      await Budget.updateRemainingAmount(this.budgetId, this.amount, 'subtract');
     } else if (this.isModified('amount')) {
       // Expense amount being modified
       const originalDoc = await this.constructor.findById(this._id);
       const amountDiff = originalDoc.amount - this.amount;
-      if (budget.remainingAmount + amountDiff < 0) {
-        throw new Error('Modified expense amount exceeds budget remaining amount');
-      }
-      budget.remainingAmount += amountDiff;
+      await Budget.updateRemainingAmount(this.budgetId, Math.abs(amountDiff), amountDiff > 0 ? 'add' : 'subtract');
     }
-
-    await budget.save();
   }
   next();
 });
@@ -44,12 +31,7 @@ ExpenseSchema.pre('save', async function(next) {
 ExpenseSchema.pre('remove', async function(next) {
   if (this.budgetId) {
     const Budget = mongoose.model('Budget');
-    const budget = await Budget.findById(this.budgetId);
-    
-    if (budget) {
-      budget.remainingAmount += this.amount;
-      await budget.save();
-    }
+    await Budget.updateRemainingAmount(this.budgetId, this.amount, 'add');
   }
   next();
 });

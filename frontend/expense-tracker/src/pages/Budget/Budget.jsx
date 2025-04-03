@@ -8,6 +8,9 @@ import BudgetDetails from "../../components/Budget/BudgetDetails";
 import { createBudget, getAllBudgets, updateBudget, deleteBudget } from "../../features/budget/budgetSlice";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useUserAuth } from "../../hooks/useUserAuth";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { formatCurrency } from "../../utils/format";
 
 const Budget = () => {
   useUserAuth();
@@ -20,14 +23,13 @@ const Budget = () => {
     dispatch(getAllBudgets());
   }, [dispatch]);
 
-  const handleCreateBudget = async (budgetData) => {
-    try {
-      await dispatch(createBudget(budgetData)).unwrap();
-      toast.success("Budget created successfully");
-      setIsFormOpen(false);
-    } catch (error) {
-      toast.error(error.message || "Failed to create budget");
-    }
+  const handleBudgetSelect = (budget) => {
+    setSelectedBudget(budget);
+  };
+
+  const handleAddBudget = (budgetData) => {
+    dispatch(createBudget(budgetData));
+    setIsFormOpen(false);
   };
 
   const handleUpdateBudget = async (budgetId, budgetData) => {
@@ -58,50 +60,72 @@ const Budget = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-semibold text-gray-800">Budgets</h1>
           <button
-            onClick={() => {
-              setSelectedBudget(null);
-              setIsFormOpen(true);
-            }}
+            onClick={() => setIsFormOpen(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Create Budget
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <BudgetList
-              budgets={budgets}
-              onSelectBudget={setSelectedBudget}
-              onDeleteBudget={handleDeleteBudget}
-              loading={loading}
-            />
+        {loading ? (
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
           </div>
-          <div>
-            {selectedBudget ? (
-              <BudgetDetails
-                budget={selectedBudget}
-                onEdit={() => {
-                  setIsFormOpen(true);
-                }}
-              />
-            ) : (
-              <div className="bg-white rounded-lg shadow p-6">
-                <p className="text-gray-500 text-center">Select a budget to view details</p>
-              </div>
-            )}
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              {budgets.map((budget) => (
+                <div
+                  key={budget._id}
+                  onClick={() => handleBudgetSelect(budget)}
+                  className={`p-4 rounded-lg cursor-pointer ${
+                    selectedBudget?._id === budget._id
+                      ? "bg-blue-100 border-2 border-blue-500"
+                      : "bg-white border border-gray-200"
+                  }`}
+                >
+                  <h3 className="font-semibold">{budget.name}</h3>
+                  <p className="text-gray-600">
+                    Total: {formatCurrency(budget.totalAmount)}
+                  </p>
+                  <p className="text-gray-600">
+                    Remaining: {formatCurrency(budget.remainingAmount)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              {selectedBudget ? (
+                <BudgetDetails
+                  budget={selectedBudget}
+                  onEdit={() => {
+                    setIsFormOpen(true);
+                  }}
+                />
+              ) : (
+                <div className="text-center text-gray-500">
+                  Select a budget to view details
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {isFormOpen && (
-          <BudgetForm
-            budget={selectedBudget}
-            onSubmit={selectedBudget ? handleUpdateBudget : handleCreateBudget}
-            onClose={() => {
-              setIsFormOpen(false);
-              setSelectedBudget(null);
-            }}
-          />
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">Add New Budget</h2>
+              <BudgetForm
+                budget={selectedBudget}
+                onSubmit={selectedBudget ? handleUpdateBudget : handleAddBudget}
+                onClose={() => {
+                  setIsFormOpen(false);
+                  setSelectedBudget(null);
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
     </DashboardLayout>

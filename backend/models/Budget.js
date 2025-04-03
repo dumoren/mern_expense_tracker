@@ -42,4 +42,24 @@ budgetSchema.pre("save", function(next) {
   next();
 });
 
+// Static method to update remaining amount when an expense is added
+budgetSchema.statics.updateRemainingAmount = async function(budgetId, amount, operation = 'subtract') {
+  const budget = await this.findById(budgetId);
+  if (!budget) {
+    throw new Error('Budget not found');
+  }
+
+  if (operation === 'subtract') {
+    if (budget.remainingAmount < amount) {
+      throw new Error('Expense amount exceeds budget remaining amount');
+    }
+    budget.remainingAmount -= amount;
+  } else if (operation === 'add') {
+    budget.remainingAmount += amount;
+  }
+
+  await budget.save();
+  return budget;
+};
+
 module.exports = mongoose.model("Budget", budgetSchema); 

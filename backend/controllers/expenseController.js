@@ -6,11 +6,20 @@ exports.addExpense = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const { icon, category, amount, date } = req.body;
+    const { icon, category, amount, date, budgetId } = req.body;
 
-    // Validation: Check for missing fields
+    // Validation: Check for required fields
     if (!category || !amount || !date) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "All required fields are missing" });
+    }
+
+    // If budgetId is provided, validate it exists
+    if (budgetId) {
+      const Budget = require("../models/Budget");
+      const budget = await Budget.findById(budgetId);
+      if (!budget) {
+        return res.status(400).json({ message: "Invalid budget selected" });
+      }
     }
 
     const newExpense = new Expense({
@@ -19,11 +28,16 @@ exports.addExpense = async (req, res) => {
       category,
       amount,
       date: new Date(date),
+      budgetId: budgetId || undefined
     });
 
     await newExpense.save();
     res.status(200).json(newExpense);
   } catch (error) {
+    console.error("Error adding expense:", error);
+    if (error.message.includes('exceeds budget remaining amount')) {
+      return res.status(400).json({ message: error.message });
+    }
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -31,11 +45,21 @@ exports.addExpense = async (req, res) => {
 // Get All Expenses (For Logged-in User)
 exports.getAllExpenses = async (req, res) => {
   const userId = req.user.id;
+  const { budgetId } = req.query;
 
   try {
-    const expenses = await Expense.find({ userId }).sort({ date: -1 });
+    // Build query object
+    const query = { userId };
+    
+    // Add budgetId to query if provided
+    if (budgetId) {
+      query.budgetId = budgetId;
+    }
+
+    const expenses = await Expense.find(query).sort({ date: -1 });
     res.json(expenses);
   } catch (error) {
+    console.error("Error fetching expenses:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
