@@ -4,19 +4,47 @@ const Expense = require("../models/Expense");
 // Create a new budget
 exports.createBudget = async (req, res) => {
   try {
+    console.log("Request headers:", req.headers);
+    console.log("Request body:", req.body);
+    
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "Request body is empty" });
+    }
+
     const { name, totalAmount, description } = req.body;
     const userId = req.user._id;
 
-    const budget = await Budget.create({
+    if (!name || !totalAmount) {
+      return res.status(400).json({ 
+        message: "Missing required fields",
+        required: { name, totalAmount }
+      });
+    }
+
+    console.log("Creating budget with data:", {
       name,
       totalAmount,
-      remainingAmount: totalAmount,
       description,
       userId
     });
 
+    const budget = await Budget.create({
+      name,
+      totalAmount,
+      description,
+      userId
+    });
+
+    console.log("Budget created successfully:", budget);
     res.status(201).json(budget);
   } catch (error) {
+    console.error("Error creating budget:", error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        message: "Validation error",
+        errors: Object.values(error.errors).map(err => err.message)
+      });
+    }
     res.status(500).json({ message: error.message });
   }
 };

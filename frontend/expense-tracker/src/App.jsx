@@ -13,7 +13,7 @@ import { Toaster } from "react-hot-toast";
 import Home from "./pages/Dashboard/Home";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
-import Budget from "./pages/Dashboard/Budget";
+import Budget from "./pages/Budget/Budget";
 
 const App = () => {
   return (

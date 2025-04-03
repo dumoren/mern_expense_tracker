@@ -15,6 +15,9 @@ const budgetSchema = new mongoose.Schema(
     remainingAmount: {
       type: Number,
       required: true,
+      default: function() {
+        return this.totalAmount;
+      }
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -31,8 +34,10 @@ const budgetSchema = new mongoose.Schema(
 
 // Pre-save middleware to set initial remaining amount
 budgetSchema.pre("save", function(next) {
+  console.log("Pre-save middleware - this:", this);
   if (this.isNew) {
     this.remainingAmount = this.totalAmount;
+    console.log("Set remainingAmount to:", this.remainingAmount);
   }
   next();
 });
