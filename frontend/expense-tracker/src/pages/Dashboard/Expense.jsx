@@ -151,32 +151,32 @@ const Expense = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <ExpenseList
-              transactions={expenseData}
+          <ExpenseList
+            transactions={expenseData}
               onDelete={(id) =>
                 setOpenDeleteAlert({ show: true, data: { id } })
               }
-              onDownload={handleDownloadExpenseDetails}
-            />
+            onDownload={handleDownloadExpenseDetails}
+          />
           </div>
         </div>
       </div>
 
-      <Modal
-        isOpen={openAddExpenseModal}
-        onClose={() => setOpenAddExpenseModal(false)}
+          <Modal
+            isOpen={openAddExpenseModal}
+            onClose={() => setOpenAddExpenseModal(false)}
         title="Add New Expense"
-      >
-        <AddExpenseForm onAddExpense={handleAddExpense} />
-      </Modal>
+          >
+            <AddExpenseForm onAddExpense={handleAddExpense} />
+          </Modal>
 
       <DeleteAlert
-        isOpen={openDeleteAlert.show}
-        onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+            isOpen={openDeleteAlert.show}
+            onClose={() => setOpenDeleteAlert({ show: false, data: null })}
         onConfirm={() => deleteExpense(openDeleteAlert.data?.id)}
-        title="Delete Expense"
+            title="Delete Expense"
         message="Are you sure you want to delete this expense record? This action cannot be undone."
-      />
+            />
     </DashboardLayout>
   );
 };
