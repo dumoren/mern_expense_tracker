@@ -4,10 +4,6 @@ A full-stack expense tracking application built with the MERN stack (MongoDB, Ex
 
 ## Features
 
-- **User Authentication**
-  - Secure registration and login
-  - JWT-based authentication
-  - Protected routes
 
 - **Expense Management**
   - Add, view, and delete expenses
@@ -55,11 +51,6 @@ A full-stack expense tracking application built with the MERN stack (MongoDB, Ex
   - JWT for authentication
   - OpenAI API for financial insights
 
-## Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB
-- OpenAI API key (for financial insights feature)
 
 ## Installation
 
@@ -99,82 +90,13 @@ A full-stack expense tracking application built with the MERN stack (MongoDB, Ex
 1. Start the backend server:
    ```bash
    cd backend
-   npm start
+   npm run dev
    ```
 
 2. Start the frontend development server:
    ```bash
    cd frontend/expense-tracker
-   npm start
+   npm run dev
    ```
 
-3. Access the application at `http://localhost:3000`
-
-## Project Structure
-
-```
-mern_expense_tracker/
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   └── server.js
-└── frontend/
-    └── expense-tracker/
-        ├── public/
-        └── src/
-            ├── components/
-            ├── pages/
-            ├── redux/
-            ├── utils/
-            └── App.js
-```
-
-## API Endpoints
-
-- **Auth**
-  - POST /api/v1/auth/register
-  - POST /api/v1/auth/login
-  - GET /api/v1/auth/user
-
-- **Income**
-  - POST /api/v1/income/add
-  - GET /api/v1/income/get
-  - DELETE /api/v1/income/:id
-  - GET /api/v1/income/downloadexcel
-
-- **Expense**
-  - POST /api/v1/expense/add
-  - GET /api/v1/expense/get
-  - DELETE /api/v1/expense/:id
-  - GET /api/v1/expense/downloadexcel
-
-- **Budget**
-  - POST /api/v1/budget/create
-  - GET /api/v1/budget/get
-  - GET /api/v1/budget/:id
-  - PUT /api/v1/budget/:id
-  - DELETE /api/v1/budget/:id
-
-- **Financial Planner**
-  - POST /api/v1/financial-planner/analyze
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- OpenAI API for providing financial insights
-- MongoDB for database services
-- The MERN stack community for resources and support 
+3. Access the application at `http://localhost:5173`
