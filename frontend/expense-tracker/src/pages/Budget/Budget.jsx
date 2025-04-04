@@ -30,7 +30,7 @@ const Budget = () => {
 
   const handleAddBudget = (budgetData) => {
     dispatch(createBudget(budgetData));
-    setIsFormOpen(false);
+      setIsFormOpen(false);
   };
 
   const handleUpdateBudget = async (budgetId, budgetData) => {
@@ -99,21 +99,21 @@ const Budget = () => {
               ))}
             </div>
 
-            <div>
-              {selectedBudget ? (
-                <BudgetDetails
-                  budget={selectedBudget}
-                  onEdit={() => {
-                    setIsFormOpen(true);
-                  }}
-                />
-              ) : (
+          <div>
+            {selectedBudget ? (
+              <BudgetDetails
+                budget={selectedBudget}
+                onEdit={() => {
+                  setIsFormOpen(true);
+                }}
+              />
+            ) : (
                 <div className="text-center text-gray-500">
                   Select a budget to view details
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
+        </div>
         )}
 
         <Modal
